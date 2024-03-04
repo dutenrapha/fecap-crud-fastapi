@@ -28,7 +28,7 @@ def adicionar_tarefa(request: Request, titulo: str = Form(...)):
     return RedirectResponse(url="/", status_code=303)
 
 # Corrija o endpoint a seguir para que ele seja capaz de deletar items do banco de dados.
-@app.delet("/tarefas/{tarefa_id}")
+@app.delete("/tarefas/{tarefa_id}")
 def deletar_tarefa(tarefa_id: int, request: Request):
     global db
     db = [tarefa for tarefa in db if tarefa.id != tarefa_id]

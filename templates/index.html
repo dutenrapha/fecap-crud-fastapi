@@ -36,8 +36,8 @@
         {% for tarefa in tarefas %}
         <li>
             {{ tarefa.titulo }} - ID: {{ tarefa.id }}
-            <button type="button" onclick="deletarTarefa(event, {{ tarefa.id }})">Deletar</button>
-            <button type="button" onclick="atualizarTarefa(event, {{ tarefa.id }})">Atualizar</button>
+            <button type="button" onclick="deletarTarefa(event, {{tarefa.id}})">Deletar</button>
+            <button type="button" onclick="atualizarTarefa(event, {{tarefa.id}})">Atualizar</button>
         </li>
         {% endfor %}
     </ul>
