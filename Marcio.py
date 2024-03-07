@@ -17,10 +17,10 @@ db: List[Tarefa] = []
 # Corrija esse endpoint para que ele envie ao template index.html todos os itens no nosso banco de dados db.
 @app.get("/")
 def ler_tarefas(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "tarefas": db})
+    return templates.TemplateResponse("index.html", {"request": request, "Tarefas": db})
 
 # Corrija o endpoint a seguir para que ele seja capaz de adicionar tarefas ao nosso banco de dados. Lembre-se que nosso banco de dados é um simples lista.
-@app.post("/tarefas/")
+@app.post("/tarefas")
 def adicionar_tarefa(request: Request, titulo: str = Form(...)):
     nova_tarefa = Tarefa(titulo=titulo)
     nova_tarefa.id = len(db) + 1
@@ -28,17 +28,18 @@ def adicionar_tarefa(request: Request, titulo: str = Form(...)):
     return RedirectResponse(url="/", status_code=303)
 
 # Corrija o endpoint a seguir para que ele seja capaz de deletar items do banco de dados.
-@app.get("/tarefas/{tarefa_id}/delete")
+@app.delete("/tarefas/{tarefa_id}")
 def deletar_tarefa(tarefa_id: int, request: Request):
     global db
     db = [tarefa for tarefa in db if tarefa.id != tarefa_id]
     return RedirectResponse(url="/", status_code=303)
 
 # Corrija o endpoint a seguir para que ele seja capaz de atulizar items do banco de dados.
-@app.post("/tarefas/{tarefa_id}/update")
-def atualizar_tarefa(tarefa_id: int, titulo: str = Form(...)):
-    for tarefa in db:
-        if tarefa.id == tarefa_id:
-            tarefa.titulo = titulo
+@app.put("/tarefas/{tarefa_id}")
+def atualizar_tarefa(tarefa_id: int, tarefa: Tarefa, request: Request):
+    for index, tarefa_existente in enumerate(db):
+        if tarefa_existente.id == tarefa_id:
+            tarefa_existente.titulo = tarefa.titulo
+            db[index] = tarefa_existente
             return RedirectResponse(url="/", status_code=303)
     raise HTTPException(status_code=404, detail=f"Tarefa com ID {tarefa_id} não encontrada.")
