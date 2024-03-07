@@ -22,24 +22,24 @@ def ler_tarefas(request: Request):
 # Corrija o endpoint a seguir para que ele seja capaz de adicionar tarefas ao nosso banco de dados. Lembre-se que nosso banco de dados é um simples lista.
 @app.post("/tarefas")
 def adicionar_tarefa(request: Request, titulo: str = Form(...)):
-    nova_tarefa = Tarefa(titulo=XXXXX)
+    nova_tarefa = Tarefa(titulo=titulo)
     nova_tarefa.id = len(db) + 1
-    XXXXX.XXXXX(XXXXX)
+    db.append(nova_tarefa)
     return RedirectResponse(url="/", status_code=303)
 
 # Corrija o endpoint a seguir para que ele seja capaz de deletar items do banco de dados.
 @app.delete("/tarefas/{tarefa_id}")
 def deletar_tarefa(tarefa_id: int, request: Request):
     global db
-    db = [XXXXX for XXXXX in db if XXXXX.XXXXX != XXXXX]
+    db = [tarefa for tarefa in db if tarefa.id != tarefa_id]
     return RedirectResponse(url="/", status_code=303)
 
 # Corrija o endpoint a seguir para que ele seja capaz de atulizar items do banco de dados.
 @app.put("/tarefas/{tarefa_id}")
 def atualizar_tarefa(tarefa_id: int, tarefa: Tarefa, request: Request):
-    for XXXXX, tarefa_existente in enumerate(db):
-        if XXXXX.id == tarefa_id:
-            XXXXX.titulo = tarefa.XXXXX
-            db[index] = XXXXX
+    for index, tarefa_existente in enumerate(db):
+        if tarefa_existente.id == tarefa_id:
+            tarefa_existente.titulo = tarefa.titulo
+            db[index] = tarefa_existente
             return RedirectResponse(url="/", status_code=303)
     raise HTTPException(status_code=404, detail=f"Tarefa com ID {tarefa_id} não encontrada.")
